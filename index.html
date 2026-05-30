@@ -27,10 +27,15 @@
     img { display: block; max-width: 100%; }
 
     /* INTRO */
-    #intro-overlay { position: fixed; inset: 0; background: var(--assil-black); z-index: 100; display: flex; align-items: center; justify-content: center; }
     #intro-stage { display: flex; align-items: center; gap: 28px; }
     #intro-symbol { height: 220px; width: auto; opacity: 0; }
     #intro-name   { height: 190px; width: auto; opacity: 0; }
+
+    @media (max-width: 640px) {
+      #intro-stage { flex-direction: column; gap: 16px; }
+      #intro-symbol { height: 120px; }
+      #intro-name   { height: 80px; }
+    }
 
     /* NAVBAR */
     #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--assil-black); }
@@ -428,7 +433,7 @@
     const stage   = document.getElementById('intro-stage');
     const symbol  = document.getElementById('intro-symbol');
     const name    = document.getElementById('intro-name');
-    const STAGE_H = 220;
+    const STAGE_H = window.innerWidth < 640 ? 120 : 220;
     const NAV_H   = 48;
 
     document.body.style.overflow = 'hidden';
