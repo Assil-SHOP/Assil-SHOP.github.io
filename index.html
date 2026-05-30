@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ASSIL — Premium Moroccan Artisanal Craftsmanship." />
+  <title>ASSIL — Moroccan Craftsmanship</title>
+  <link rel="icon" type="image/png" href="images/logo-symbol.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    :root {
+      --assil-black: #0a0a0a;
+      --assil-charcoal: #141414;
+      --assil-gold: #c9a84c;
+      --assil-ivory: #f5f0e8;
+      --assil-sand: #e8dfd0;
+      --assil-stone: #d4c5a9;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--assil-black); }
+    body { font-family: "Montserrat", sans-serif; background: var(--assil-ivory); color: var(--assil-black); -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--assil-gold); color: var(--assil-black); }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* INTRO */
+    #intro-overlay { position: fixed; inset: 0; background: var(--assil-black); z-index: 100; display: flex; align-items: center; justify-content: center; }
+    #intro-stage { display: flex; align-items: center; gap: 28px; }
+    #intro-symbol { height: 220px; width: auto; opacity: 0; }
+    #intro-name   { height: 190px; width: auto; opacity: 0; }
+
+    /* NAVBAR */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--assil-black); }
+    #navbar-main { height: 64px; max-width: 1600px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-left, .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-icon-btn { background: none; border: none; cursor: pointer; color: var(--assil-gold); display: flex; align-items: center; transition: opacity 0.2s; }
+    .nav-icon-btn:hover { opacity: 0.7; }
+    #navbar-brand { display: flex; align-items: center; margin-left: 2rem; }
+    #navbar-brand img { height: 48px; width: auto; }
+    #navbar-secondary { background: var(--assil-black); border-top: 1px solid rgba(201,168,76,0.15); max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.3s ease, opacity 0.3s ease; }
+    #navbar-secondary.open { max-height: 60px; opacity: 1; }
+    #navbar-secondary ul { max-width: 1600px; margin: 0 auto; padding: 12px 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 28px; list-style: none; }
+    .nav-link { font-family: "Montserrat", sans-serif; font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--assil-gold); position: relative; padding-bottom: 4px; }
+    .nav-link::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px; background: var(--assil-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    #hero { position: relative; width: 100%; height: 100vh; overflow: hidden; margin-top: 64px; }
+    #hero-video, #hero-placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #hero-placeholder { background: radial-gradient(circle at 30% 20%, #1a1a1a 0%, transparent 60%), radial-gradient(circle at 70% 80%, #1f1a12 0%, transparent 60%), #0a0a0a; }
+    #hero-vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.55) 100%); }
+    #hero-title { position: absolute; left: 0; right: 0; bottom: 8%; font-family: "Cormorant Garamond", serif; font-weight: 400; color: #fff; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: 0.3em; text-shadow: 0 4px 30px rgba(0,0,0,0.55); text-align: center; }
+
+    /* HELPERS */
+    .section-y { padding: 96px 24px; }
+    @media(min-width:768px) { .section-y { padding: 128px 40px; } }
+    .max-w-content { max-width: 1280px; margin: 0 auto; }
+    .max-w-narrow { max-width: 896px; margin: 0 auto; }
+    .gold-label { font-family: "Montserrat", sans-serif; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--assil-gold); }
+    .serif-display { font-family: "Cormorant Garamond", serif; font-weight: 500; letter-spacing: 0.02em; }
+    .gold-divider { width: 80px; height: 1px; background: var(--assil-gold); margin: 32px auto 0; }
+    .btn-gold { display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; border: 1px solid var(--assil-gold); color: var(--assil-gold); background: transparent; font-family: "Montserrat", sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; }
+    .btn-gold:hover { background: var(--assil-gold); color: var(--assil-black); }
+    .placeholder-warm { background-color: var(--assil-stone); width: 100%; height: 100%; }
+    .placeholder-dark { background: radial-gradient(circle at 30% 20%, #1a1a1a 0%, transparent 60%), radial-gradient(circle at 70% 80%, #1f1a12 0%, transparent 60%), #0a0a0a; }
+
+    /* BRAND STATEMENT */
+    #brand-statement { background: var(--assil-ivory); text-align: center; }
+    #brand-statement h2 { font-size: clamp(2rem, 4vw, 3.5rem); color: var(--assil-gold); line-height: 1.1; }
+    #brand-statement p { font-size: 14px; margin-top: 32px; line-height: 1.8; color: #3a3530; max-width: 640px; margin-left: auto; margin-right: auto; }
+
+    /* PRODUCTS */
+    #products { background: var(--assil-ivory); }
+    .products-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 64px; }
+    @media(min-width:768px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 56px; } }
+    .product-card { transition: transform 0.6s ease; }
+    .product-card:hover { transform: translateY(-6px); }
+    .product-image { aspect-ratio: 1/1; overflow: hidden; background: var(--assil-stone); }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+    .product-card:hover .product-image img { transform: scale(1.06); }
+    .product-info { margin-top: 24px; text-align: center; }
+    .product-info h3 { font-size: clamp(1.3rem, 2vw, 1.75rem); color: var(--assil-black); }
+    .product-info .desc { font-size: 12px; margin-top: 8px; color: #5a544c; line-height: 1.7; }
+    .product-info .price { font-size: 14px; margin-top: 16px; color: var(--assil-gold); letter-spacing: 0.1em; }
+
+    /* ARTISAN */
+    #artisan { position: relative; overflow: hidden; }
+    #artisan-bg-placeholder { position: absolute; inset: 0; }
+    #artisan-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.6) 50%, rgba(10,10,10,0.4) 100%); }
+    #artisan-content { position: relative; max-width: 1280px; margin: 0 auto; padding: 112px 40px; }
+    #artisan-content h2 { font-size: clamp(2.2rem, 5vw, 4rem); color: #fff; line-height: 1.05; margin-top: 24px; }
+    #artisan-content h2 span { color: var(--assil-gold); }
+    #artisan-content p { font-size: 14px; margin-top: 32px; color: rgba(245,240,232,0.85); line-height: 1.8; max-width: 520px; }
+
+    /* CERTIFICATION */
+    #certification { background: var(--assil-black); text-align: center; }
+    #certification h2 { font-size: clamp(2rem, 3.5vw, 3rem); color: var(--assil-ivory); margin-top: 24px; line-height: 1.2; }
+    .seals-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 64px; }
+    @media(min-width:768px) { .seals-grid { grid-template-columns: repeat(3, 1fr); } }
+    .seal-card { padding: 40px; text-align: left; background: var(--assil-charcoal); border: 1px solid rgba(201,168,76,0.35); }
+    .seal-card svg { width: 48px; height: 48px; }
+    .seal-card .seal-name { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--assil-gold); margin-top: 24px; font-family: "Montserrat", sans-serif; }
+    .seal-card h3 { font-size: clamp(1.3rem, 2vw, 1.75rem); color: var(--assil-ivory); margin-top: 12px; }
+    .seal-card p { font-size: 13px; margin-top: 16px; color: rgba(245,240,232,0.7); line-height: 1.7; }
+
+    /* INSTAGRAM */
+    #instagram { background: var(--assil-ivory); text-align: center; }
+    #instagram h2 { font-size: clamp(1.8rem, 3vw, 2.75rem); color: var(--assil-black); margin-top: 24px; }
+    .insta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 56px; }
+    @media(min-width:768px) { .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+    @media(min-width:1024px) { .insta-grid { grid-template-columns: repeat(6, 1fr); } }
+    .insta-tile { aspect-ratio: 1/1; background: var(--assil-stone); position: relative; overflow: hidden; cursor: pointer; }
+    .insta-tile img { width: 100%; height: 100%; object-fit: cover; }
+    .insta-hover { position: absolute; inset: 0; background: rgba(201,168,76,0); display: flex; align-items: center; justify-content: center; transition: background 0.4s ease; }
+    .insta-tile:hover .insta-hover { background: rgba(201,168,76,0.75); }
+    .insta-hover svg { opacity: 0; transform: scale(0.7); transition: opacity 0.4s, transform 0.4s; }
+    .insta-tile:hover .insta-hover svg { opacity: 1; transform: scale(1); }
+
+    /* NEWSLETTER */
+    #newsletter { background: var(--assil-black); text-align: center; }
+    #newsletter h2 { font-size: clamp(2rem, 3.5vw, 3.25rem); color: var(--assil-ivory); line-height: 1.2; }
+    #newsletter > .max-w-narrow > p { font-size: 14px; margin-top: 24px; color: rgba(245,240,232,0.7); }
+    .newsletter-form { margin-top: 48px; display: flex; flex-direction: column; gap: 24px; max-width: 560px; margin-left: auto; margin-right: auto; }
+    @media(min-width:768px) { .newsletter-form { flex-direction: row; align-items: flex-end; } }
+    .newsletter-form .input-wrap { flex: 1; text-align: left; }
+    .newsletter-form label { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--assil-gold); display: block; margin-bottom: 12px; }
+    .newsletter-form input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(201,168,76,0.5); padding: 8px 0; font-size: 14px; color: var(--assil-ivory); outline: none; font-family: "Montserrat", sans-serif; }
+    #newsletter-success { margin-top: 24px; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--assil-gold); display: none; }
+
+    /* FOOTER */
+    footer { background: var(--assil-black); }
+    .footer-grid { max-width: 1280px; margin: 0 auto; padding: 80px 40px 40px; display: grid; grid-template-columns: 1fr; gap: 48px; }
+    @media(min-width:768px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
+    .footer-logo { height: 72px; width: auto; }
+    .footer-tagline { font-size: 12px; margin-top: 24px; color: rgba(245,240,232,0.55); line-height: 1.7; max-width: 240px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--assil-gold); font-family: "Montserrat", sans-serif; }
+    .footer-col ul { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { font-size: 13px; color: rgba(245,240,232,0.7); transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--assil-gold); }
+    .social-links { display: flex; gap: 20px; margin-top: 24px; }
+    .social-links a { color: var(--assil-gold); transition: opacity 0.2s; }
+    .social-links a:hover { opacity: 0.7; }
+    .footer-bottom { border-top: 1px solid rgba(201,168,76,0.15); text-align: center; padding: 24px; }
+    .footer-bottom p { font-size: 11px; color: rgba(245,240,232,0.55); }
+
+    /* COMING SOON */
+    #coming-soon-page { display: none; min-height: 100vh; background: var(--assil-ivory); padding: 160px 24px 128px; text-align: center; }
+    #coming-soon-page h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--assil-black); line-height: 1.05; margin-top: 24px; }
+    #coming-soon-page p { font-size: 14px; margin-top: 32px; color: #5a544c; line-height: 1.8; max-width: 480px; margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+
+<!-- ===== INTRO ===== -->
+<div id="intro-overlay">
+  <div id="intro-stage">
+    <img id="intro-symbol" src="images/logo-symbol.png" alt="ASSIL" />
+    <img id="intro-name"   src="images/logo-name.png"   alt="ASSIL — Moroccan Craftsmanship" />
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<header id="navbar">
+  <div id="navbar-main">
+    <div class="nav-left">
+      <button class="nav-icon-btn" id="menu-btn" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <button class="nav-icon-btn" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+    <a href="#" id="navbar-brand" onclick="showPage('home'); return false;">
+      <img src="images/logo.png" alt="ASSIL — Moroccan Craftsmanship" />
+    </a>
+    <div class="nav-right">
+      <a href="#" class="nav-icon-btn" aria-label="Sign in"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+      <a href="#" class="nav-icon-btn" aria-label="Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+      <a href="#" class="nav-icon-btn" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+    </div>
+  </div>
+  <nav id="navbar-secondary">
+    <ul>
+      <li><a href="#" class="nav-link">New Arrivals</a></li>
+      <li><a href="#" class="nav-link">Men</a></li>
+      <li><a href="#" class="nav-link">Women</a></li>
+      <li><a href="#" class="nav-link" onclick="showPage('coming-soon'); return false;">About Us</a></li>
+      <li><a href="#" class="nav-link" onclick="showPage('coming-soon'); return false;">Contact</a></li>
+      <li><a href="#" class="nav-link">Wishlist</a></li>
+      <li><a href="#" class="nav-link">Sign In</a></li>
+      <li><a href="#" class="nav-link">Cart</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== HOME PAGE ===== -->
+<div id="home-page">
+
+  <!-- Hero Video -->
+  <section id="hero">
+    <div id="hero-placeholder"></div>
+    <video id="hero-video" autoplay muted loop playsinline style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+      <source src="videos/hero-loop.mp4" type="video/mp4" />
+    </video>
+    <div id="hero-vignette"></div>
+    <h2 id="hero-title">CRAFTED HERITAGE</h2>
+  </section>
+
+  <!-- Brand Statement -->
+  <section id="brand-statement" class="section-y">
+    <div class="max-w-narrow" style="text-align:center;">
+      <h2 class="serif-display">Where tradition meets timeless luxury.</h2>
+      <p>Every piece is handcrafted by verified Moroccan artisans, built to last a lifetime.</p>
+      <div class="gold-divider"></div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section id="products" class="section-y">
+    <div class="max-w-content">
+      <p class="gold-label" style="text-align:center;">The Collection</p>
+      <div class="gold-divider" style="margin:20px auto 0;"></div>
+      <div class="products-grid">
+        <article class="product-card">
+          <div class="product-image">
+            <!-- Remplace placeholder par: <img src="images/product-1.jpg" alt="Marrakech Noir" /> -->
+            <div class="placeholder-warm"></div>
+          </div>
+          <div class="product-info">
+            <h3 class="serif-display">Marrakech Noir</h3>
+            <p class="desc">Hand-stitched black leather, ancestral pattern.</p>
+            <p class="price">€ 320</p>
+            <a href="#" class="btn-gold" style="margin-top:24px;">Discover</a>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">
+            <!-- Remplace placeholder par: <img src="images/product-2.jpg" alt="Sahara Or" /> -->
+            <div class="placeholder-warm"></div>
+          </div>
+          <div class="product-info">
+            <h3 class="serif-display">Sahara Or</h3>
+            <p class="desc">Sun-cured tan leather, golden thread embroidery.</p>
+            <p class="price">€ 360</p>
+            <a href="#" class="btn-gold" style="margin-top:24px;">Discover</a>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">
+            <!-- Remplace placeholder par: <img src="images/product-3.jpg" alt="Atlas Ivoire" /> -->
+            <div class="placeholder-warm"></div>
+          </div>
+          <div class="product-info">
+            <h3 class="serif-display">Atlas Ivoire</h3>
+            <p class="desc">Cream nappa, woven sole, signed by the artisan.</p>
+            <p class="price">€ 340</p>
+            <a href="#" class="btn-gold" style="margin-top:24px;">Discover</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Artisan Story -->
+  <section id="artisan">
+    <div id="artisan-bg-placeholder" class="placeholder-dark" style="position:absolute;inset:0;">
+      <!-- Remplace placeholder par: <img src="images/artisan-bg.jpg" style="width:100%;height:100%;object-fit:cover;" /> -->
+    </div>
+    <div id="artisan-overlay"></div>
+    <div id="artisan-content">
+      <p class="gold-label">Our Artisans</p>
+      <h2 class="serif-display">The hands behind<br><span>every piece.</span></h2>
+      <p>From the medinas of Fès to the workshops of Marrakech, ASSIL partners with master artisans whose craft has been passed down through generations. We preserve their heritage by giving each pair a name, a maker, and a story you can wear.</p>
+      <a href="#" class="btn-gold" style="margin-top:40px; display:inline-flex;" onclick="showPage('coming-soon'); return false;">Meet our artisans</a>
+    </div>
+  </section>
+
+  <!-- Certification -->
+  <section id="certification" class="section-y">
+    <div class="max-w-content">
+      <p class="gold-label">The Assil Seal</p>
+      <h2 class="serif-display">Three guarantees of authenticity.</h2>
+      <div class="gold-divider"></div>
+      <div class="seals-grid">
+        <div class="seal-card">
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" stroke="#C9A84C" stroke-width="1.4"/><circle cx="32" cy="32" r="22" fill="none" stroke="#C9A84C" stroke-width="0.6" opacity="0.6"/><path d="M32 14 L36 28 L50 28 L39 36 L43 50 L32 41 L21 50 L25 36 L14 28 L28 28 Z" fill="#C9A84C" opacity="0.9"/></svg>
+          <p class="seal-name">ASSIL SEAL I</p>
+          <h3 class="serif-display">Premium Certified</h3>
+          <p>Master-level workshop, traceable raw materials, lifetime craftsmanship warranty.</p>
+        </div>
+        <div class="seal-card">
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" stroke="#C9A84C" stroke-width="1.4"/><circle cx="32" cy="32" r="22" fill="none" stroke="#C9A84C" stroke-width="0.6" opacity="0.6"/><path d="M32 14 L36 28 L50 28 L39 36 L43 50 L32 41 L21 50 L25 36 L14 28 L28 28 Z" fill="#C9A84C" opacity="0.9"/></svg>
+          <p class="seal-name">ASSIL SEAL II</p>
+          <h3 class="serif-display">Verified Handmade</h3>
+          <p>100% handmade by an identified artisan, signed and dated by the maker.</p>
+        </div>
+        <div class="seal-card">
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" stroke="#C9A84C" stroke-width="1.4"/><circle cx="32" cy="32" r="22" fill="none" stroke="#C9A84C" stroke-width="0.6" opacity="0.6"/><path d="M32 14 L36 28 L50 28 L39 36 L43 50 L32 41 L21 50 L25 36 L14 28 L28 28 Z" fill="#C9A84C" opacity="0.9"/></svg>
+          <p class="seal-name">ASSIL SEAL III</p>
+          <h3 class="serif-display">Emerging Artisan</h3>
+          <p>Supports a new generation of artisans selected for their exceptional craft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram Feed -->
+  <section id="instagram" class="section-y">
+    <div class="max-w-content">
+      <p class="gold-label">@assil.official</p>
+      <h2 class="serif-display">From our world to yours.</h2>
+      <div class="gold-divider"></div>
+      <div class="insta-grid">
+        <!-- Remplace les placeholders par: <img src="images/insta-1.jpg" alt="" /> -->
+        <div class="insta-tile"><div class="placeholder-warm"></div><div class="insta-hover"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div></div>
+        <div class="insta-tile"><div class="placeholder-warm"></div><div class="insta-hover"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div></div>
+        <div class="insta-tile"><div class="placeholder-warm"></div><div class="insta-hover"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div></div>
+        <div class="insta-tile"><div class="placeholder-warm"></div><div class="insta-hover"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div></div>
+        <div class="insta-tile"><div class="placeholder-warm"></div><div class="insta-hover"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div></div>
+        <div class="insta-tile"><div class="placeholder-warm"></div><div class="insta-hover"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section id="newsletter" class="section-y">
+    <div class="max-w-narrow">
+      <h2 class="serif-display">Join the world of ASSIL.</h2>
+      <p>Be the first to discover new collections and artisan stories.</p>
+      <div class="newsletter-form">
+        <div class="input-wrap">
+          <label for="newsletter-email">Email address</label>
+          <input type="email" id="newsletter-email" placeholder="you@example.com" />
+        </div>
+        <button class="btn-gold" id="newsletter-btn">Subscribe</button>
+      </div>
+      <p id="newsletter-success">Thank you — welcome to ASSIL.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <img src="images/logo.png" alt="ASSIL" class="footer-logo" />
+        <p class="footer-tagline">Heritage babouches and luxury leather goods, hand-made in Morocco, delivered worldwide.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Men</a></li>
+          <li><a href="#">Women</a></li>
+          <li><a href="#" onclick="showPage('coming-soon'); return false;">About Us</a></li>
+          <li><a href="#" onclick="showPage('coming-soon'); return false;">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('coming-soon'); return false;">Shipping</a></li>
+          <li><a href="#" onclick="showPage('coming-soon'); return false;">Returns</a></li>
+          <li><a href="#" onclick="showPage('coming-soon'); return false;">Size Guide</a></li>
+          <li><a href="#" onclick="showPage('coming-soon'); return false;">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow us</h4>
+        <div class="social-links">
+          <a href="https://instagram.com" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://tiktok.com" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></a>
+          <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8c-2.2 0-4 1.8-4 4 0 1.7 1.1 3.2 2.6 3.8-.1-.3-.1-.8 0-1.2l.7-2.8s-.2-.4-.2-.9c0-.9.5-1.5 1.2-1.5.6 0 .8.4.8.9 0 .6-.4 1.4-.6 2.2-.2.9.4 1.6 1.2 1.6 1.4 0 2.4-1.8 2.4-4 0-2.1-1.5-3.5-3.7-3.5z"/></svg></a>
+        </div>
+        <a href="#newsletter" class="btn-gold" style="margin-top:32px; display:inline-flex;">Newsletter</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="footer-year"></span> ASSIL — Moroccan Craftsmanship. All rights reserved.</p>
+    </div>
+  </footer>
+
+</div><!-- end #home-page -->
+
+<!-- ===== COMING SOON PAGE ===== -->
+<div id="coming-soon-page">
+  <p class="gold-label">ASSIL</p>
+  <h1 class="serif-display">Coming soon.</h1>
+  <div class="gold-divider"></div>
+  <p>This chapter of ASSIL is being hand-finished by our artisans. Return shortly to discover it.</p>
+  <a href="#" class="btn-gold" style="margin-top:40px; display:inline-flex;" onclick="showPage('home'); return false;">Back to home</a>
+</div>
+
+<script>
+  // ── Page switcher ──────────────────────────────────────────
+  function showPage(page) {
+    document.getElementById('home-page').style.display = page === 'home' ? 'block' : 'none';
+    document.getElementById('coming-soon-page').style.display = page === 'coming-soon' ? 'block' : 'none';
+    window.scrollTo(0, 0);
+  }
+
+  // ── Footer year ───────────────────────────────────────────
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+  // ── Menu toggle ───────────────────────────────────────────
+  document.getElementById('menu-btn').addEventListener('click', function () {
+    document.getElementById('navbar-secondary').classList.toggle('open');
+  });
+
+  // ── Newsletter ────────────────────────────────────────────
+  document.getElementById('newsletter-btn').addEventListener('click', function () {
+    const email = document.getElementById('newsletter-email').value;
+    if (email) document.getElementById('newsletter-success').style.display = 'block';
+  });
+
+  // ── Hero video fallback ───────────────────────────────────
+  const video = document.getElementById('hero-video');
+  video.addEventListener('canplay', function () {
+    document.getElementById('hero-placeholder').style.display = 'none';
+    video.style.display = 'block';
+  });
+
+  // ── GSAP Intro ────────────────────────────────────────────
+  window.addEventListener('load', function () {
+    const overlay = document.getElementById('intro-overlay');
+    const stage   = document.getElementById('intro-stage');
+    const symbol  = document.getElementById('intro-symbol');
+    const name    = document.getElementById('intro-name');
+    const STAGE_H = 220;
+    const NAV_H   = 48;
+
+    document.body.style.overflow = 'hidden';
+
+    gsap.set(symbol, { rotation: 0, scale: 0.6, opacity: 0 });
+    gsap.set(name,   { opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' });
+    gsap.set(stage,  { x: 0, y: 0, scale: 1, opacity: 1 });
+
+    gsap.timeline({
+      onComplete: function () {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    })
+    .to(symbol, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' })
+    .to(symbol, { rotation: 360, duration: 1.6, ease: 'power2.inOut' }, '-=0.6')
+    .to(name,   { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power3.out' }, '-=1.2')
+    .to({},     { duration: 1.0 })
+    .to(stage,  { scale: NAV_H / STAGE_H, y: -window.innerHeight / 2 + 32, duration: 1.0, ease: 'power3.inOut' })
+    .to(overlay,{ opacity: 0, duration: 0.55, ease: 'power2.inOut' }, '-=0.1');
+  });
+</script>
+</body>
+</html>
